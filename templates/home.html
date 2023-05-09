@@ -1,0 +1,159 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value=Submit>
+    </form>
+    {% if store %}
+    <div>
+        <p>"{{ store }}" store scrape</p>
+        <form action="scrape/{{ store_id }}">
+            {% csrf_token %}
+            <input type="submit" value=Submit>
+        </form>
+    </div>
+    {% endif %}
+    <br><a href='/product'>
+        <button class="product_list_button">
+            Products List
+        </button>
+    </a>
+    <table class="table table-bordered" style="padding-top: 100px;">
+        <tr>
+            <th>No</th>
+            <th>Store ID</th>
+            <th>Store Name</th>
+            <th>Date Added</th>
+            <th>Action Button</th>
+        </tr>
+        {% for r in all_store %}
+        <tr>
+            <th> {{ r.id }}</th>
+            <th> {{ r.store_id }}</th>
+            <th> {{ r.store_name }}</th>
+            <th> {{ r.date }}</th>
+            {% if r.action == "inactive" %}
+            <th> <a type="button" href="button/{{ r.store_id }}/active">{{ r.action }}</a> </th>
+            {% elif r.action == "active" %}
+            <th> <a type="button" href="button/{{ r.store_id }}/inactive">{{ r.action }}</a> </th>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+
+</html> -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Store Scraper</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        input[type=text] {
+            padding: 6px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 6px;
+            margin-bottom: 10px;
+        }
+
+        button[type=submit] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 6px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button[type=submit]:hover {
+            background-color: #45a049;
+        }
+
+        .product_list_button {
+            background-color: #4c8baf;
+            color: white;
+            padding: 6px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <a href="/media/test_csv/grabstore.csv">Downloadd</a> -->
+    <h2>Stores</h2>
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="text" name="store_id" id="searchInput" placeholder="Store Link...">
+        <button type="submit">Submit</button>
+        <a type="button" href='/product' class="product_list_button">
+                Products List
+        </a>
+    </form>
+    {% if store %}
+    <div>
+        <p>"{{ store }}" store scrape</p>
+        <form action="scrape/{{ store_id }}">
+            {% csrf_token %}
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+        {% endif %}
+    <table id="dataTable">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Store ID</th>
+                <th>Store Name</th>
+                <th>Date Added</th>
+                <th>Action Button</th>
+            </tr>
+        </thead>
+        <tbody>
+          {% for r in all_store %}
+            <tr>
+                <td>{{ r.id }}</td>
+                <td>{{ r.store_id }}</td>
+                <td>{{ r.store_name }}</td>
+                <td>{{ r.date }}</td>
+                {% if r.action == "inactive" %}
+                <td> <a type="button" href="button/{{ r.store_id }}/active">{{ r.action }}</a> </td>
+                {% elif r.action == "active" %}
+                <td> <a type="button" href="button/{{ r.store_id }}/inactive">{{ r.action }}</a> </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+</body>
+
+</html>

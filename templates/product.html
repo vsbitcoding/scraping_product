@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>DataTable with search, sorting and download functionality</title>
+
+    <!-- Load required libraries -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.25/datatables.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/22.2.3/css/dx.material.blue.light.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+
+
+    <style>
+        .dx-datagrid-header-panel {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: #fff;
+            width: 100%;
+        }
+
+        .dx-datagrid-header-panel .dx-datagrid-search-panel {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: #fff;
+            width: 100%;
+        }
+
+        .dx-datagrid-pager {
+            position: sticky;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 9999;
+            background-color: #fff;
+        }
+
+        .grid-container {
+            height: 100vh;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .grid-container {
+                height: auto;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .grid-container {
+                height: 100vh;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .grid-container {
+                width: auto;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .grid-container {
+                width: 100%;
+            }
+        }
+
+
+
+        .dx-datagrid-content .dx-datagrid-table .dx-row>td {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .dx-datagrid-headers {
+            color: #959595;
+            font-weight: 400;
+            -ms-touch-action: pinch-zoom;
+            touch-action: pinch-zoom;
+            border-bottom: 1px solid #ddd;
+            position: sticky;
+            top: 57px;
+            border: none;
+            background: #fff;
+            z-index: 11;
+        }
+
+        .back {
+            color: #fff !important;
+            font-size: 20px;
+            text-decoration: none;
+            background: #000;
+            padding: 10px 15px;
+            margin: 10px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .back:hover i {
+            transform: translateX(-5px);
+            transition: all 0.3s ease;
+        }
+
+        #back-button {
+            display: none;
+        }
+    </style>
+</head>
+
+<body class="dx-viewport">
+    <!-- <a id="back-button" href="/" class="back"> <i class="fas fa-arrow-left"></i> </a> -->
+    <!-- <div id="deleteSelectedRows"></div> -->
+    <div id="gridContainer" class="grid-container">
+
+        <div id="progressbar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+            aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+
+    </div>
+    <div id="loading"></div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"> </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.14/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.0/papaparse.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.2/jszip.min.js"></script>
+    <script src="https://cdn3.devexpress.com/jslib/22.2.3/js/dx.all.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.4.0/polyfill.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/1.7.0/exceljs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.25/datatables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.js"></script>
+
+    <script>
+
+        function getData(page, limit) {
+            var progressBar = $("#progressbar");
+            var progressText = progressBar.find(".progress-text");
+            progressBar.progressbar({
+                value: false
+            });
+
+            // Hide the back button while the progress bar is running
+            $("#back-button").hide();
+
+            const url = `/api/request_data?page=${page}&limit=${limit}`;
+            return fetch(url)
+                .then((response) => response.json())
+                .then((data) => {
+                    progressBar.progressbar("value", 100); // update progress bar to 100% after data is loaded
+
+                    // Show the back button when the progress bar is finished
+                    $("#back-button").show();
+
+                    const dbPromise = initDatabase();
+                    const dataArray = [];
+
+                    // loop through the data and add each item to the array
+                    data.forEach((item) => {
+                        dataArray.push(item);
+                    });
+
+                    // add data to database
+                    dbPromise.then((db) => {
+                        addToDatabase(db, dataArray).then(() => {
+                            localStorage.setItem("lastRefresh", new Date().toISOString());
+                        });
+                    });
+
+                    // return the array
+                    return dataArray;
+                })
+                .catch((error) => {
+                    progressBar.progressbar("value", false); // reset progress bar if there is an error
+                    console.error("Error fetching data:", error);
+                });
+        }
+
+
+
+        function initDatabase() {
+            return new Promise((resolve, reject) => {
+                const request = window.indexedDB.open("Mystore", 2);
+                request.onupgradeneeded = (event) => {
+                    const db = event.target.result;
+                    const objectStore = db.createObjectStore("products", { keyPath: "id" });
+                    objectStore.createIndex("updated_at", "updated_at", { unique: false });
+                };
+                request.onsuccess = (event) => {
+                    const db = event.target.result;
+                    resolve(db);
+                };
+                request.onerror = (event) => {
+                    reject(event.target.error);
+                };
+            });
+        }
+
+
+        function addToDatabase(db, data) {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction(["products"], "readwrite");
+                const objectStore = transaction.objectStore("products");
+
+                if (Array.isArray(data)) {
+                    data.forEach((item) => {
+                        if (item.id) {
+                            const getRequest = objectStore.get(item.id);
+                            getRequest.onsuccess = (event) => {
+                                const existingItem = event.target.result;
+                                if (!existingItem) {
+                                    objectStore.add(item);
+                                } else if (existingItem.updated_at !== item.updated_at) {
+                                    // Only update if the existing item has an older "updated_at" value
+                                    objectStore.put(item);
+                                }
+                            };
+                        }
+                    });
+                } else {
+                    if (data.id) {
+                        const getRequest = objectStore.get(data.id);
+                        getRequest.onsuccess = (event) => {
+                            const existingItem = event.target.result;
+                            if (!existingItem) {
+                                objectStore.add(data);
+                            } else if (existingItem.updated_at !== data.updated_at) {
+                                // Only update if the existing item has an older "updated_at" value
+                                objectStore.put(data);
+                            }
+                        };
+                    }
+                }
+
+                transaction.oncomplete = (event) => {
+                    resolve();
+                };
+                transaction.onerror = (event) => {
+                    reject(event.target.error);
+                };
+            });
+        }
+
+
+
+
+
+        function getDataFromDatabase(db, lastRefreshTime) {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction(["products"], "readonly");
+                const objectStore = transaction.objectStore("products");
+                const request = objectStore.getAll();
+                request.onsuccess = (event) => {
+                    const data = event.target.result.filter((item) => {
+                        // Only return items that have been updated since the last refresh
+                        return item.updated_at > lastRefreshTime;
+                    });
+                    resolve(data);
+                };
+                request.onerror = (event) => {
+                    reject(event.target.error);
+                };
+            });
+        }
+
+
+
+        $(function () {
+            var loading = $("#loading").dxLoadIndicator({
+                visible: false,
+                elementAttr: {
+                    class: "custom-loading-indicator"
+                },
+                // indicatorSrc: "https://www.example.com/loader.gif",
+                text: "Loading data, please wait...",
+                textVisible: true
+            }).dxLoadIndicator("instance");
+
+            const page = 1;
+            const limit = 1000; // set to a large number to fetch all data
+            // const dataKey = `product_list_${page}_${limit}`;
+
+            var progressBar = $("#progressbar");
+            var progressText = progressBar.find(".progress-text");
+            progressBar.progressbar({
+                value: false
+            });
+
+            const dbPromise = initDatabase();
+            dbPromise.then((db) => {
+                const transaction = db.transaction(["products"], "readonly");
+                const objectStore = transaction.objectStore("products");
+                const request = objectStore.count();
+                request.onsuccess = (event) => {
+                    const count = event.target.result;
+                    const lastRefresh = localStorage.getItem("lastRefresh");
+                    let products;
+                    let lastRefreshTime = 0; // Define lastRefreshTime here
+                    if (lastRefresh) {
+                        lastRefreshTime = new Date(lastRefresh).getTime();
+                        const index = objectStore.index("updated_at");
+                        const range = IDBKeyRange.lowerBound(lastRefreshTime, true);
+                        const request = index.openCursor(range);
+                        products = [];
+                        request.onsuccess = (event) => {
+                            const cursor = event.target.result;
+                            if (cursor) {
+                                products.push(cursor.value);
+                                cursor.continue();
+                            } else {
+                                // console.log(Found ${ products.length } updated products);
+                            }
+                        };
+                    } else {
+                        const request = objectStore.getAll();
+                        request.onsuccess = (event) => {
+                            products = event.target.result;
+                            // console.log(Found ${ products.length } products);
+                        };
+                    }
+                    if (count > 0) {
+                        getDataFromDatabase(db, lastRefreshTime).then((data) => {
+                            // console.log(data);
+                            if (data.length > 0) {
+                                // console.log(Adding ${ data.length } updated products to database);
+                                addToDatabase(db, data).then(() => {
+                                    // console.log('Added ${ data.length } updated products to database');
+                                    var filteredData = data.filter(function (item, pos) {
+                                        return data.findIndex(function (item2) {
+                                            return item2.photo_id == item.photo_id && item2.store_name == item.store_name;
+                                        }) == pos;
+                                    });
+                                    // console.log(filteredData);
+                                    renderDataGrid(filteredData);
+                                });
+                            } else {
+                                // console.log(No updated products found);
+                                var filteredData = products.filter(function (item, pos) {
+                                    return products.findIndex(function (item2) {
+                                        return item2.photo_id == item.photo_id && item2.store_name == item.store_name;
+                                    }) == pos;
+                                });
+                                // console.log(filteredData);
+                                renderDataGrid(filteredData);
+                            }
+                        });
+                    }
+                    getData(page, limit).then((data) => {
+                        // console.log(data);
+                        localStorage.setItem("lastRefresh", new Date().toISOString());
+                        addToDatabase(db, data).then(() => {
+                            // console.log('Added ${ data.length } products to database');
+                            var filteredData = data.filter(function (item, pos) {
+                                return data.findIndex(function (item2) {
+                                    return item2.photo_id == item.photo_id && item2.store_name == item.store_name;
+                                }) == pos;
+                            });
+                            // console.log(filteredData);
+                            renderDataGrid(filteredData);
+                        });
+                    });
+                };
+                request.onerror = (event) => {
+                    console.error("Error counting objects in database:", event.target.error);
+                };
+            }).catch((error) => {
+                console.error("Error opening database:", error);
+            });
+        });
+
+
+
+
+
+        function renderDataGrid(data) {
+            $("#back-button").show();
+            $("#gridContainer").dxDataGrid({
+
+                onContentReady: function (e) {
+                    var loading = $("#loading").dxLoadIndicator({
+                        visible: false,
+                        elementAttr: {
+                            class: "custom-loading-indicator"
+                        },
+                        // indicatorSrc: "https://www.example.com/loader.gif",
+                        text: "Loading data, please wait...",
+                        textVisible: true
+                    }).dxLoadIndicator("instance");
+                },
+                dataSource: {
+                    store: new DevExpress.data.CustomStore({
+                        loadMode: "raw",
+                        store: data,
+                        load: function (options) {
+                            var deferred = $.Deferred();
+
+                            // Check if there is any data available
+                            if (data.length == 0) {
+                                // Display a loading message and resolve the deferred object after a short delay
+
+
+                            } else {
+                                // Load data from store and resolve deferred
+                                deferred.resolve(data);
+                            }
+
+                            return deferred.promise();
+                        }
+                    })
+                },
+
+                loadPanel: {
+                    enabled: true,
+                    text: "Loading...",
+                    showIndicator: true,
+                    showPane: true,
+                    shading: true,
+                    shadingColor: "rgba(0,0,0,0.4)",
+                    position: {
+                        of: "#gridContainer",
+                        my: "center",
+                        at: "center",
+                    },
+                },
+
+                height: "100vh",
+                width: "100%",
+                dragging: {
+                    allowReordering: true,
+                    allowGrouping: true,
+                    mode: "both",
+                    showDragIcons: true,
+                    group: "auto",
+                },
+                allowColumnReordering: true,
+                allowColumnResizing: true,
+                columnAutoWidth: true,
+                columnChooser: {
+                    enabled: true,
+                },
+                columnHidingEnabled: true,
+                columnResizingMode: "nextColumn",
+                columnWidth: 100,
+
+                columns: [
+                    {
+                        dataField: 'photo_id', caption: 'photo_id', width: 120, resizable: true, allowResizing: true, allowReordering: true, allowGrouping: true, allowHiding: true, allowFiltering: true, allowSorting: true, allowEditing: true, allowExporting: true, allowFixing: true, allowSearch: true, allowHeaderFiltering: true, allowColumnChooser: true, allowColumnFixing: true, allowColumnReordering: true, allowColumnResizing: true, allowColumnHiding: true, allowColumnGrouping: true, allowColumnFiltering: true, allowColumnSorting: true, allowColumnReordering: true, allowColumnResizing: true, allowColumnHiding: true, allowColumnGrouping: true, allowColumnFiltering: true, allowColumnSorting: true, allowColumnReordering: true, allowColumnResizing: true, allowColumnHiding: true, allowColumnGrouping: true, allowColumnFiltering: true, allowColumnSorting: true, allowColumnReordering: true, allowColumnResizing: true, allowColumnHiding: true, allowColumnGrouping: true, allowColumnFiltering: true, allowColumnSorting: true, allowColumnReordering: true, allowColumnResizing: true, allowColumnHiding: true, allowColumnGrouping: true, allowColumnFiltering: true, allowColumnSorting: true, allowColumnReordering: true, allowColumnResizing: true, allowColumnHiding: true, allowColumnGrouping: true, allowColumnFiltering: true, allowColumnSorting: true, allowColumnReordering: true, allowColumnResizing: true, allowColumnHiding: true, allowColumnGrouping: true, allowColumnFiltering: true, allowColumnSorting: true, allowColumnReordering: true, allowColumnResizing: true, allowColumnHiding: true, allowColumnGrouping: true, allowColumnFiltering: true, allowColumnSorting: true, allowColumnReordering: true, allowColumnResizing: true, allowColumnHiding: true, allowColumnGrouping: true,
+                        //add view button to the grid column
+                        cellTemplate: function (container, options) {
+                            $("<a>")
+                                .text(options.value)
+                                .addClass("dx-link")
+                                .on("dxclick", function (e) {
+                                    let photo_id = options.value;
+                                    // console.log(photo_id);
+                                    let endpoint = '/api/data?photo_id=' + photo_id;
+                                    $.ajax({
+                                        method: "GET",
+                                        url: endpoint,
+                                        success: function (datas) {
+                                            // console.log(datas);
+                                            modal = '<div class="modal fade" id="Modal_' + photo_id + '" tabindex="-1" aria-labelledby="photoModalLabel" aria-hidden="true">';
+                                            modal += '<div class="modal-dialog modal-dialog-centered modal-xl">';
+                                            modal += '<div class="modal-content">';
+                                            modal += '<div class="modal-header">';
+                                            modal += '<h5 class="modal-title" id="photoModalLabel">' + photo_id + '</h5>';
+                                            modal += '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>';
+                                            modal += '</div>';
+                                            modal += '<div class="modal-body">';
+                                            modal += '<table id="Table_' + photo_id + '" class="table table-striped table-bordered" style="width:100%">';
+                                            modal += '<thead>';
+                                            modal += '<tr>';
+                                            modal += '<th>Listing ID</th>';
+                                            modal += '<th>Title</th>';
+                                            modal += '<th>Buy price</th>';
+                                            modal += '<th>Store Name</th>';
+                                            modal += '<th>Image</th>';
+                                            modal += '<th>Sold Quantiy</th>';
+                                            modal += '<th>Last Update</th>';
+                                            modal += '</tr>';
+                                            modal += '</thead>';
+                                            modal += '<tbody>';
+
+                                            for (var i = 0; i < datas.data_list.length; i++) {
+                                                // console.log(datas.data_list[0].buy_price);
+                                                modal += '<tr>';
+                                                modal += '<td>' + datas.data_list[i].listing_id + '</td>';
+                                                modal += '<td>' + datas.data_list[i].title + '</td>';
+                                                modal += '<td>' + datas.data_list[i].buy_price + '</td>';
+                                                modal += '<td>' + datas.data_list[i].store_name + '</td>';
+                                                modal += '<td> <img src="' + datas.data_list[i].image_url + '" class="img-fluid"> </td>'
+                                                modal += '<td>' + datas.data_list[i].sold_quantity + '</td>';
+                                                modal += '<td>' + datas.data_list[i].data_updated_at + '</td>';
+                                                modal += '</tr>';
+                                            }
+
+                                            modal += '</tbody>';
+                                            modal += '</table>';
+                                            modal += '</div>';
+                                            modal += '<div class="modal-footer">';
+                                            modal += '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>';
+                                            modal += '</div>';
+                                            modal += '</div>';
+                                            modal += '</div>';
+                                            modal += '</div>';
+                                            $('body').append(modal);
+                                            $('#Table_' + photo_id).DataTable();
+                                            $('#Modal_' + photo_id).modal('show');
+                                        },
+                                        error: function (xhr, status, error) {
+                                            // console.log(error);
+                                        }
+                                    });
+                                })
+                                .appendTo(container);
+                        }
+                    },
+
+                    { dataField: 'title', caption: 'title', resizable: true, width: 820, allowResizing: true, allowReordering: true, allowGrouping: true, allowHiding: true, allowFiltering: true, allowSorting: true, allowEditing: true, allowExporting: true, allowFixing: true, allowSearch: true, allowHeaderFiltering: true, allowColumnChooser: true, allowColumnFixing: true, allowColumnReordering: true, allowColumnResizing: true, allowColumnHiding: true, allowColumnGrouping: true, allowColumnFiltering: true, allowColumnSorting: true, allowColumnReordering: true, allowColumnResizing: true, allowColumnHiding: true, allowColumnGrouping: true, allowColumnFiltering: true, allowColumnSorting: true, allowColumnReordering: true, allowColumnResizing: true, allowColumnHiding: true, allowColumnGrouping: true, allowColumnFiltering: true, allowColumnSorting: true, allowColumnReordering: true, allowColumnResizing: true, allowColumnHiding: true, allowColumnGrouping: true, allowColumnFiltering: true, allowColumnSorting: true, allowColumnReordering: true, allowColumnResizing: true, allowColumnHiding: true, allowColumnGrouping: true, allowColumnFiltering: true, allowColumnSorting: true, allowColumnReordering: true, allowColumnResizing: true, allowColumnHiding: true, allowColumnGrouping: true, allowColumnFiltering: true, allowColumnSorting: true, allowColumnReordering: true, allowColumnResizing: true, allowColumnHiding: true, allowColumnGrouping: true, allowColumnFiltering: true, allowColumnSorting: true, allowColumnReordering: true, allowColumnResizing: true, allowColumnHiding: true, allowColumnGrouping: true, allowColumnFiltering: true, allowColumnSorting: true, allowColumnReordering: true, allowColumnResizing: true, allowColumnHiding: true, allowColumnGrouping: true, allowColumnFiltering: true, allowColumnSorting: true, allowColumnReordering: true, },
+                    { dataField: 'store_name', caption: 'store_name', resizable: true, width: 120, allowResizing: true, allowReordering: true, allowGrouping: true, allowHiding: true, allowFiltering: true, allowSorting: true, allowEditing: true, allowExporting: true, allowFixing: true, allowSearch: true, allowHeaderFiltering: true, allowColumnChooser: true, allowColumnFixing: true, allowColumnReordering: true, allowColumnResizing: true, allowColumnHiding: true, allowColumnGrouping: true, allowColumnFiltering: true, allowColumnSorting: true, allowColumnReordering: true, allowColumnResizing: true, allowColumnHiding: true, allowColumnGrouping: true, allowColumnFiltering: true, allowColumnSorting: true, allowColumnReordering: true, allowColumnResizing: true, allowColumnHiding: true, allowColumnGrouping: true, allowColumnFiltering: true, allowColumnSorting: true, allowColumnReordering: true, allowColumnResizing: true, allowColumnHiding: true, allowColumnGrouping: true, allowColumnFiltering: true, allowColumnSorting: true, allowColumnReordering: true, allowColumnResizing: true, allowColumnHiding: true, allowColumnGrouping: true, allowColumnFiltering: true, allowColumnSorting: true, allowColumnReordering: true, allowColumnResizing: true, allowColumnHiding: true, allowColumnGrouping: true, allowColumnFiltering: true, allowColumnSorting: true, allowColumnReordering: true, allowColumnResizing: true, allowColumnHiding: true, allowColumnGrouping: true, allowColumnFiltering: true, allowColumnSorting: true, allowColumnReordering: true, allowColumnResizing: true, allowColumnHiding: true, allowColumnGrouping: true, allowColumnFiltering: true, allowColumnSorting: true, allowColumnReordering: true, allowColumnResizing: true, allowColumnHiding: true, allowColumnGrouping: true, allowColumnFiltering: true, allowColumnSorting: true, allowColumnReordering: true },
+                    {
+                        dataField: 'image_url', caption: 'image_url', width: 100,
+                        cellTemplate: function (container, options) {
+                            $("<img>")
+                                .attr("src", options.value)
+                                .attr("class", "img-fluid")
+                                .appendTo(container);
+                        }, resizable: true, allowResizing: true, allowReordering: true, allowGrouping: true, allowHiding: true, allowFiltering: true, allowSorting: true, allowEditing: true, allowExporting: true, allowFixing: true, allowSearch: true, allowHeaderFiltering: true, allowColumnChooser: true, allowColumnFixing: true, allowColumnReordering: true, allowColumnResizing: true, allowColumnHiding: true, allowColumnGrouping: true, allowColumnFiltering: true, allowColumnSorting: true, allowColumnReordering: true, allowColumnResizing: true, allowColumnHiding: true, allowColumnGrouping: true, allowColumnFiltering: true, allowColumnSorting: true, allowColumnReordering: true, allowColumnResizing: true, allowColumnHiding: true, allowColumnGrouping: true, allowColumnFiltering: true, allowColumnSorting: true, allowColumnReordering: true, allowColumnResizing: true, allowColumnHiding: true, allowColumnGrouping: true, allowColumnFiltering: true, allowColumnSorting: true, allowColumnReordering: true, allowColumnResizing: true, allowColumnHiding: true, allowColumnGrouping: true, allowColumnFiltering: true, allowColumnSorting: true, allowColumnReordering: true, allowColumnResizing: true, allowColumnHiding: true, allowColumnGrouping: true, allowColumnFiltering: true, allowColumnSorting: true, allowColumnReordering: true, allowColumnResizing: true, allowColumnHiding: true, allowColumnGrouping: true, allowColumnFiltering: true, allowColumnSorting: true, allowColumnReordering: true, allowColumnResizing: true, allowColumnHiding: true, allowColumnGrouping: true, allowColumnFiltering: true, allowColumnSorting: true, allowColumnReordering: true, allowColumnResizing: true, allowColumnHiding: true, allowColumnGrouping: true, allowColumnFiltering: true, allowColumnSorting: true, allowColumnReordering: true
+                    },
+                    {dataField: 'buy_price', caption: 'buy_price', width: 120, resizable: true, allowResizing: true, allowReordering: true, allowGrouping: true, allowHiding: true, allowFiltering: true, allowSorting: true, dataType: 'number', },
+                    { dataField: 'current_month', caption: 'Current month', width: 120, resizable: true, allowResizing: true, allowReordering: true, allowGrouping: true, allowHiding: true, allowFiltering: true, allowSorting: true, },
+                    { dataField: 'prev_month', caption: 'Last month', resizable: true, width: 120, allowResizing: true, allowReordering: true, allowGrouping: true, allowHiding: true, allowFiltering: true, allowSorting: true, },
+                    { dataField: 'sec_prev_month', caption: 'Second Last month', width: 120, resizable: true, allowResizing: true, allowReordering: true, allowGrouping: true, allowHiding: true, allowFiltering: true, allowSorting: true, },
+                    {
+                        dataField: 'Sold Quantity',
+                        caption: 'Sold Quantity',
+                        width: 120,
+                        cellTemplate: function (container, options) {
+                            var button = $("<button/>").text("View").dxButton({
+                                onClick: function () {
+                                    let photo_id = options.data.photo_id;
+                                    let endpoint = '/api?photo_id=' + photo_id;
+                                    $.ajax({
+                                        method: "GET",
+                                        url: endpoint,
+                                        success: function (databutton) {
+                                            // console.log(databutton);
+                                            modalHtml = '<div class="modal fade" id="photoModal_' + photo_id + '" tabindex="-1" aria-labelledby="photoModalLabel" aria-hidden="true">';
+                                            modalHtml += '<div class="modal-dialog modal-dialog-centered modal-xl">';
+                                            modalHtml += '<div class="modal-content">';
+                                            modalHtml += '<div class="modal-header">';
+                                            modalHtml += '<h5 class="modal-title" id="photoModalLabel">' + options.data.title + '</h5>';
+                                            modalHtml += '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>';
+                                            modalHtml += '</div>';
+                                            modalHtml += '<div class="modal-body">';
+                                            modalHtml += '<table id="photoTable_' + photo_id + '" class="table table-striped table-bordered" style="width:100%">';
+                                            modalHtml += '<thead>';
+                                            modalHtml += '<tr>';
+                                            modalHtml += '<th>Sold</th>';
+                                            modalHtml += '<th>Date</th>';
+                                            modalHtml += '</tr>';
+                                            modalHtml += '</thead>';
+                                            modalHtml += '<tbody>';
+
+                                            for (var i = 0; i < databutton.labels.length; i++) {
+                                                modalHtml += '<tr>';
+                                                modalHtml += '<td>' + databutton.chartdata[i] + '</td>';
+                                                modalHtml += '<td>' + databutton.labels[i] + '</td>';
+                                                modalHtml += '</tr>';
+                                            }
+
+                                            modalHtml += '</tbody>';
+                                            modalHtml += '</table>';
+                                            modalHtml += '</div>';
+                                            modalHtml += '<div class="modal-footer">';
+                                            modalHtml += '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>';
+                                            modalHtml += '</div>';
+                                            modalHtml += '</div>';
+                                            modalHtml += '</div>';
+                                            modalHtml += '</div>';
+                                            $('body').append(modalHtml);
+                                            $('#photoTable_' + photo_id).DataTable();
+                                            $('#photoModal_' + photo_id).modal('show');
+                                        },
+                                        error: function (xhr, status, error) {
+                                            // console.log(error);
+                                        }
+                                    });
+                                }
+                            });
+                            container.append(button);
+                        },
+                        // cellTemplate: function (container, options) {
+                        //     $("<button>")
+                        //         .attr("class", "btn btn-primary")
+                        //         .text("Sold Quantity")
+                        //         .on("click", function () {
+                        //             let photo_id = options.data.photo_id;
+                        // let endpoint = 'http://ec2-13-48-47-224.eu-north-1.compute.amazonaws.com/api?photo_id=' + photo_id;
+                        // $.ajax({
+                        //     method: "GET",
+                        //     url: endpoint,
+                        //     success: function (databutton) {
+                        //         console.log(databutton);
+                        //         modalHtml = '<div class="modal fade" id="photoModal_' + photo_id + '" tabindex="-1" aria-labelledby="photoModalLabel" aria-hidden="true">';
+                        //         modalHtml += '<div class="modal-dialog modal-dialog-centered modal-xl">';
+                        //         modalHtml += '<div class="modal-content">';
+                        //         modalHtml += '<div class="modal-header">';
+                        //         modalHtml += '<h5 class="modal-title" id="photoModalLabel">' + options.data.title + '</h5>';
+                        //         modalHtml += '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>';
+                        //         modalHtml += '</div>';
+                        //         modalHtml += '<div class="modal-body">';
+                        //         modalHtml += '<table id="photoTable_' + photo_id + '" class="table table-striped table-bordered" style="width:100%">';
+                        //         modalHtml += '<thead>';
+                        //         modalHtml += '<tr>';
+                        //         modalHtml += '<th>Listing ID</th>';
+                        //         modalHtml += '<th>Title</th>';
+                        //         modalHtml += '</tr>';
+                        //         modalHtml += '</thead>';
+                        //         modalHtml += '<tbody>';
+
+                        //         for (var i = 0; i < databutton.labels.length; i++) {
+                        //             modalHtml += '<tr>';
+                        //             modalHtml += '<td>' + databutton.chartdata[i] + '</td>';
+                        //             modalHtml += '<td>' + databutton.labels[i] + '</td>';
+                        //             modalHtml += '</tr>';
+                        //         }
+
+                        //         modalHtml += '</tbody>';
+                        //         modalHtml += '</table>';
+                        //         modalHtml += '</div>';
+                        //         modalHtml += '<div class="modal-footer">';
+                        //         modalHtml += '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>';
+                        //         modalHtml += '</div>';
+                        //         modalHtml += '</div>';
+                        //         modalHtml += '</div>';
+                        //         modalHtml += '</div>';
+                        //         $('body').append(modalHtml);
+                        //         $('#photoTable_' + photo_id).DataTable();
+                        //         $('#photoModal_' + photo_id).modal('show');
+                        //     },
+                        //     error: function (xhr, status, error) {
+                        //         console.log(error);
+                        //     }
+                        // });
+                        //         })
+                        //         .appendTo(container);
+                        // }
+                    }
+                ],
+                selection: {
+                    mode: "multiple",
+                    showCheckBoxesMode: "always"
+                },
+                // editing: {
+                //     allowDeleting: true,
+                //     mode: "row",
+                //     confirmDelete: true
+                // },
+                // onRowRemoved: function (e) {
+                //     console.log(e);
+
+                // },
+                // onCellClick: function (e) {
+                //     if (e.column.command === "delete") {
+                //         e.component.deleteRow(e.rowIndex);
+                //     }
+                // },
+                // onContextMenuPreparing: function (e) {
+                //     if (e.row && e.row.rowIndex > -1) {
+                //         e.items.push({
+                //             text: "Delete",
+                //             onItemClick: function () {
+                //                 e.component.deleteRow(e.row.rowIndex);
+                //             }
+                //         });
+                //     }
+                // },
+
+                // remoteOperations: {
+                //     paging: true,
+                //     sorting: true,
+                //     filtering: true,
+                //     grouping: true,
+                //     summary: true,
+                //     groupPaging: true
+                // },
+                paging: {
+                    pageSize: 100
+                },
+                pager: {
+                    showPageSizeSelector: true,
+                    allowedPageSizes: [50, 100, 200],
+                    showInfo: true,
+                    showNavigationButtons: true,
+                    showPageSizeSelector: true,
+                    visible: true
+                },
+                filterRow: { visible: true, applyFilter: "auto", showOperationChooser: true, showAllText: "Show all" },
+                headerFilter: { visible: true, allowSearch: true },
+                searchPanel: { visible: true, width: 500, placeholder: "Search..." },
+                selection: { mode: 'multiple', showCheckBoxesMode: 'always', selectAllMode: 'allPages', showSelectionControls: true, allowSelectAll: true },
+                export: {
+                    enabled: true,
+                    fileName: "Data",
+                    allowExportSelectedData: true,
+                    excelFilterEnabled: true,
+                    excelWrapTextEnabled: true,
+                    pdfExportEnabled: true,
+                    pdfFileName: "Data.pdf",
+                    pdfPageOrientation: "landscape",
+                    pdfPageLandscape: true,
+                },
+                onToolbarPreparing: function (e) {
+                    e.toolbarOptions.items.unshift({
+                        location: "before",
+                        widget: "dxButton",
+                        options: {
+                            icon: "download",
+                            text: "Export to CSV",
+                            onClick: function () {
+                                var csv = "data:text/csv;charset=utf-8,";
+                                var selectedRowsData = $("#gridContainer").dxDataGrid("instance").getSelectedRowsData();
+                                var columns = $("#gridContainer").dxDataGrid("instance").getVisibleColumns();
+                                // header row
+                                columns.forEach(function (column) {
+                                    csv += column.caption + ",";
+                                });
+                                csv += "\n";
+                                // data rows
+                                selectedRowsData.forEach(function (row) {
+                                    columns.forEach(function (column) {
+                                        csv += '"' + row[column.dataField] + '",';
+                                    });
+                                    csv += "\n";
+                                });
+                                // create a hidden link to download the CSV file
+                                var link = document.createElement("a");
+                                link.setAttribute("href", encodeURI(csv));
+                                link.setAttribute("download", "data.csv");
+                                link.style.display = "none";
+                                document.body.appendChild(link);
+                                link.click();
+                                document.body.removeChild(link);
+                            }
+                        }
+                    })
+                    e.toolbarOptions.items.unshift({
+                        location: "before",
+                        widget: "dxButton",
+                        options: {
+                            icon: "download",
+                            text: "Export to PDF",
+                            onClick: function () {
+                                const { jsPDF } = window.jspdf;
+                                // retrieve the selected row data from the grid
+                                const selectedRowsData = $("#gridContainer").dxDataGrid("instance").getSelectedRowsData();
+                                const columns = $("#gridContainer").dxDataGrid("instance").getVisibleColumns();
+                                // declare the CSV variable
+                                var csv = '';
+                                // replace the CSV data construction code with PapaParse
+                                var csvData = Papa.unparse(selectedRowsData, {
+                                    columns: columns.map(function (column) {
+                                        return column.dataField;
+                                    })
+                                });
+                                // construct a table element containing the selected rows
+                                var table = document.createElement('table');
+                                var headerRow = table.insertRow();
+                                columns.forEach(function (column) {
+                                    var headerCell = headerRow.insertCell();
+                                    headerCell.textContent = column.caption;
+                                });
+                                selectedRowsData.forEach(function (row) {
+                                    var dataRow = table.insertRow();
+                                    columns.forEach(function (column) {
+                                        var dataCell = dataRow.insertCell();
+                                        dataCell.textContent = row[column.dataField];
+                                    });
+                                });
+                                // create a new jsPDF instance
+                                var doc = new jsPDF('landscape');
+                                // add the table to the document
+                                doc.autoTable({
+                                    html: table,
+                                    theme: 'grid',
+                                    margin: { top: 20 },
+                                    didDrawPage: function (data) {
+                                        doc.text("Data", 14, 15);
+                                    }
+                                });
+                                // save the PDF
+                                doc.save('data.pdf');
+                            }
+                        }
+                    })
+                    e.toolbarOptions.items.unshift({
+                        location: "before",
+                        widget: "dxButton",
+                        options: {
+                            icon: "download",
+                            text: "Export to Excel",
+                            onClick: function () {
+                                var selectedRowsData = $("#gridContainer").dxDataGrid("instance").getSelectedRowsData();
+                                var columns = $("#gridContainer").dxDataGrid("instance").getVisibleColumns();
+                                var workbook = new ExcelJS.Workbook();
+                                var worksheet = workbook.addWorksheet('Data');
+                                worksheet.columns = columns.map(function (column) {
+                                    return { header: column.caption, key: column.dataField };
+                                });
+                                worksheet.addRows(selectedRowsData);
+                                workbook.xlsx.writeBuffer().then(function (buffer) {
+                                    saveAs(new Blob([buffer], { type: "application/octet-stream" }), "data.xlsx");
+                                });
+                            }
+                        }
+                    })
+                    //add back button
+                    e.toolbarOptions.items.unshift({
+                        location: "before",
+                        widget: "dxButton",
+                        options: {
+                            icon: "back",
+                            text: "Back",
+                            onClick: function () {
+                                window.location.href = "/";
+                            }
+                        }
+                    })
+                },
+
+                groupPanel: { visible: true, emptyPanelText: 'Drag a column header here to group by that column' },
+            }).addClass('dx-theme');
+        }
+
+        // $("#deleteSelectedRows").dxButton({
+        //         text: "Delete Selected Rows",
+        //         onClick: function () {
+        //             var dataGrid = $("#gridContainer").dxDataGrid("instance");
+        //             var selectedRowKeys = dataGrid.getSelectedRowKeys();
+        //             if (selectedRowKeys.length > 0) {
+        //                 dataGrid.deleteRow(selectedRowKeys[0]);
+        //                 dataGrid.refresh().done(function () {
+        //                     console.log(selectedRowKeys.length + " rows deleted");
+        //                     //remove the deleted row keys from the selection
+        //                     dataGrid.deselectRows(selectedRowKeys);
+
+        //                 });
+        //             }
+        //         }
+        //     });
+
+
+
+    </script>
+</body>
+
+</html>
