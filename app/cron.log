@@ -19144,3 +19144,270 @@ INFO:root:2023-05-09 16:02:20.426289 in listing_cron_scrap_data request function
 INFO:root:os.listdir(dir_path) listing_cron_scrap_data......................['6299152.json']
 WARNING:django.request:Not Found: //.env
 WARNING:django.request:Not Found: /geoserver/web/
+INFO:root:2023-05-09 18:30:02.418242 Cron job Started.
+INFO:root:2023-05-09 17:57:45.210158 in cron_scrap_data request function
+INFO:root:5139 length of exclude_scraper_listing_id+++++++++++++++++++
+INFO:root:4096 length of request data
+INFO:root: Before Initialize the list++++++++++++++++++++++++++++++++++
+INFO:root:2023-05-09 17:57:45.210158 5139 listind_id_list sent for reqest function
+INFO:root:2023-05-09 17:57:45.210119 in listing_cron_scrap_data request function
+INFO:root:os.listdir(dir_path)......................['6299152.json']
+WARNING:django.request:Not Found: /.env
+INFO:root:2023-05-09 17:57:45.210158 in listing_cron_scrap_data request function
+INFO:root:os.listdir(dir_path) listing_cron_scrap_data......................['6299152.json']
+WARNING:django.request:Not Found: /Core/Skin/Login.aspx
+WARNING:django.security.csrf:Forbidden (CSRF cookie not set.): /
+WARNING:django.request:Not Found: /.env
+WARNING:django.request:Not Found: /cgi-bin/authLogin.cgi
+INFO:root:2023-05-09 19:30:02.521000 Cron job Started.
+INFO:root:2023-05-09 17:57:45.210158 in cron_scrap_data request function
+INFO:root:5140 length of exclude_scraper_listing_id+++++++++++++++++++
+INFO:root:4097 length of request data
+INFO:root: Before Initialize the list++++++++++++++++++++++++++++++++++
+INFO:root:2023-05-09 17:57:45.210158 5140 listind_id_list sent for reqest function
+INFO:root:2023-05-09 17:57:45.210119 in listing_cron_scrap_data request function
+INFO:root:os.listdir(dir_path)......................['6299152.json']
+INFO:root:2023-05-09 17:57:45.210158 in listing_cron_scrap_data request function
+INFO:root:os.listdir(dir_path) listing_cron_scrap_data......................['6299152.json']
+WARNING:django.request:Not Found: /.env
+WARNING:django.security.csrf:Forbidden (CSRF cookie not set.): /
+WARNING:django.security.csrf:Forbidden (CSRF cookie not set.): /
+WARNING:django.request:Not Found: /.env
+INFO:root:2023-05-09 20:30:03.332875 Cron job Started.
+INFO:root:2023-05-09 17:57:45.210158 in cron_scrap_data request function
+INFO:root:5147 length of exclude_scraper_listing_id+++++++++++++++++++
+INFO:root:4097 length of request data
+INFO:root: Before Initialize the list++++++++++++++++++++++++++++++++++
+INFO:root:2023-05-09 17:57:45.210158 5147 listind_id_list sent for reqest function
+INFO:root:2023-05-09 17:57:45.210119 in listing_cron_scrap_data request function
+INFO:root:os.listdir(dir_path)......................['6299152.json']
+INFO:root:2023-05-09 17:57:45.210158 in listing_cron_scrap_data request function
+INFO:root:os.listdir(dir_path) listing_cron_scrap_data......................['6299152.json']
+WARNING:django.request:Not Found: /Core/Skin/Login.aspx
+INFO:root:2023-05-09 21:30:02.456427 Cron job Started.
+INFO:root:2023-05-09 17:57:45.210158 in cron_scrap_data request function
+INFO:root:5152 length of exclude_scraper_listing_id+++++++++++++++++++
+INFO:root:4097 length of request data
+INFO:root: Before Initialize the list++++++++++++++++++++++++++++++++++
+INFO:root:2023-05-09 17:57:45.210158 5152 listind_id_list sent for reqest function
+INFO:root:2023-05-09 17:57:45.210119 in listing_cron_scrap_data request function
+INFO:root:os.listdir(dir_path)......................['6299152.json']
+WARNING:django.security.csrf:Forbidden (CSRF cookie not set.): /
+WARNING:django.request:Not Found: /.env
+INFO:root:2023-05-09 17:57:45.210158 in listing_cron_scrap_data request function
+INFO:root:os.listdir(dir_path) listing_cron_scrap_data......................['6299152.json']
+INFO:root:2023-05-09 22:30:02.839189 Cron job Started.
+INFO:root:2023-05-09 17:57:45.210158 in cron_scrap_data request function
+INFO:root:5157 length of exclude_scraper_listing_id+++++++++++++++++++
+INFO:root:4097 length of request data
+INFO:root: Before Initialize the list++++++++++++++++++++++++++++++++++
+INFO:root:2023-05-09 17:57:45.210158 5157 listind_id_list sent for reqest function
+INFO:root:2023-05-09 17:57:45.210119 in listing_cron_scrap_data request function
+INFO:root:os.listdir(dir_path)......................['6299152.json']
+INFO:root:2023-05-09 17:57:45.210158 in listing_cron_scrap_data request function
+INFO:root:os.listdir(dir_path) listing_cron_scrap_data......................['6299152.json']
+WARNING:django.request:Not Found: /Core/Skin/Login.aspx
+INFO:root:2023-05-09 23:30:02.575399 Cron job Started.
+WARNING:django.request:Not Found: /.env
+WARNING:django.security.csrf:Forbidden (CSRF cookie not set.): /
+INFO:root:2023-05-09 17:57:45.210158 in cron_scrap_data request function
+INFO:root:5161 length of exclude_scraper_listing_id+++++++++++++++++++
+INFO:root:4097 length of request data
+INFO:root: Before Initialize the list++++++++++++++++++++++++++++++++++
+INFO:root:2023-05-09 17:57:45.210158 5161 listind_id_list sent for reqest function
+INFO:root:2023-05-09 17:57:45.210119 in listing_cron_scrap_data request function
+INFO:root:os.listdir(dir_path)......................['6299152.json']
+INFO:root:2023-05-09 17:57:45.210158 in listing_cron_scrap_data request function
+INFO:root:os.listdir(dir_path) listing_cron_scrap_data......................['6299152.json']
+WARNING:django.security.csrf:Forbidden (CSRF cookie not set.): /
+WARNING:django.request:Not Found: /.env
+WARNING:django.request:Not Found: /.env
+WARNING:django.security.csrf:Forbidden (CSRF cookie not set.): /
+WARNING:django.request:Not Found: /.aws/credentials
+INFO:root:2023-05-10 00:30:03.115864 Cron job Started.
+INFO:root:2023-05-09 17:57:45.210158 in cron_scrap_data request function
+INFO:root:5165 length of exclude_scraper_listing_id+++++++++++++++++++
+INFO:root:4097 length of request data
+INFO:root: Before Initialize the list++++++++++++++++++++++++++++++++++
+INFO:root:2023-05-09 17:57:45.210158 5165 listind_id_list sent for reqest function
+INFO:root:2023-05-09 17:57:45.210119 in listing_cron_scrap_data request function
+INFO:root:os.listdir(dir_path)......................['6299152.json']
+INFO:root:2023-05-09 17:57:45.210158 in listing_cron_scrap_data request function
+INFO:root:os.listdir(dir_path) listing_cron_scrap_data......................['6299152.json']
+WARNING:django.request:Not Found: /boaform/admin/formLogin
+WARNING:django.request:Not Found: /Core/Skin/Login.aspx
+INFO:root:2023-05-10 01:30:02.352125 Cron job Started.
+WARNING:django.security.csrf:Forbidden (CSRF cookie not set.): /
+WARNING:django.request:Not Found: /.env
+INFO:root:2023-05-09 17:57:45.210158 in cron_scrap_data request function
+INFO:root:5172 length of exclude_scraper_listing_id+++++++++++++++++++
+INFO:root:4095 length of request data
+INFO:root: Before Initialize the list++++++++++++++++++++++++++++++++++
+INFO:root:2023-05-09 17:57:45.210158 5172 listind_id_list sent for reqest function
+INFO:root:2023-05-09 17:57:45.210119 in listing_cron_scrap_data request function
+INFO:root:os.listdir(dir_path)......................['6299152.json']
+INFO:root:2023-05-09 17:57:45.210158 in listing_cron_scrap_data request function
+INFO:root:os.listdir(dir_path) listing_cron_scrap_data......................['6299152.json']
+INFO:root:2023-05-10 02:30:02.818059 Cron job Started.
+INFO:root:2023-05-09 17:57:45.210158 in cron_scrap_data request function
+INFO:root:5211 length of exclude_scraper_listing_id+++++++++++++++++++
+INFO:root:4098 length of request data
+INFO:root: Before Initialize the list++++++++++++++++++++++++++++++++++
+INFO:root:2023-05-09 17:57:45.210158 5211 listind_id_list sent for reqest function
+INFO:root:2023-05-09 17:57:45.210119 in listing_cron_scrap_data request function
+INFO:root:os.listdir(dir_path)......................['6299152.json']
+INFO:root:2023-05-09 17:57:45.210158 in listing_cron_scrap_data request function
+INFO:root:os.listdir(dir_path) listing_cron_scrap_data......................['6299152.json']
+WARNING:django.request:Not Found: /*
+WARNING:django.request:Not Found: /favicon.ico
+WARNING:django.request:Not Found: /Core/Skin/Login.aspx
+WARNING:django.request:Not Found: /conf/.env
+WARNING:django.request:Not Found: /tool/view/phpinfo.view.php
+WARNING:django.request:Not Found: /wp-content/.env
+WARNING:django.request:Not Found: /tool/view/phpinfo.view.php
+WARNING:django.request:Not Found: /debug/default/view.html
+WARNING:django.request:Not Found: /library/.env
+WARNING:django.request:Not Found: /debug/default/view.html
+WARNING:django.request:Not Found: /frontend/web/debug/default/view
+WARNING:django.request:Not Found: /vendor/.env
+WARNING:django.request:Not Found: /.aws/credentials
+WARNING:django.request:Not Found: /api/.env
+WARNING:django.request:Not Found: /web/debug/default/view
+WARNING:django.request:Not Found: /config/aws.yml
+WARNING:django.request:Not Found: /laravel/.env
+WARNING:django.request:Not Found: /sapi/debug/default/view
+WARNING:django.request:Not Found: /symfony/public/_profiler/phpinfo
+WARNING:django.request:Not Found: /sites/all/libraries/mailchimp/.env
+WARNING:django.request:Not Found: /wp-config.php-backup
+WARNING:django.security.csrf:Forbidden (CSRF cookie not set.): /
+WARNING:django.request:Not Found: /.env
+INFO:root:2023-05-10 03:30:02.326815 Cron job Started.
+INFO:root:2023-05-09 17:57:45.210158 in cron_scrap_data request function
+INFO:root:5249 length of exclude_scraper_listing_id+++++++++++++++++++
+INFO:root:4097 length of request data
+INFO:root: Before Initialize the list++++++++++++++++++++++++++++++++++
+INFO:root:2023-05-09 17:57:45.210158 5249 listind_id_list sent for reqest function
+INFO:root:2023-05-09 17:57:45.210119 in listing_cron_scrap_data request function
+INFO:root:os.listdir(dir_path)......................['6299152.json']
+INFO:root:2023-05-09 17:57:45.210158 in listing_cron_scrap_data request function
+INFO:root:os.listdir(dir_path) listing_cron_scrap_data......................['6299152.json']
+WARNING:django.request:Not Found: /boaform/admin/formLogin
+WARNING:django.request:Not Found: /manager/text/list
+INFO:root:2023-05-10 04:30:02.884243 Cron job Started.
+INFO:root:2023-05-09 17:57:45.210158 in cron_scrap_data request function
+INFO:root:5299 length of exclude_scraper_listing_id+++++++++++++++++++
+INFO:root:4097 length of request data
+INFO:root: Before Initialize the list++++++++++++++++++++++++++++++++++
+INFO:root:2023-05-09 17:57:45.210158 5299 listind_id_list sent for reqest function
+INFO:root:2023-05-09 17:57:45.210119 in listing_cron_scrap_data request function
+INFO:root:os.listdir(dir_path)......................['6299152.json']
+INFO:root:2023-05-09 17:57:45.210158 in listing_cron_scrap_data request function
+INFO:root:os.listdir(dir_path) listing_cron_scrap_data......................['6299152.json']
+WARNING:django.request:Not Found: /Core/Skin/Login.aspx
+WARNING:django.request:Not Found: /boaform/admin/formLogin
+INFO:root:2023-05-10 05:30:03.550813 Cron job Started.
+INFO:root:2023-05-10 05:35:51.244072 in cron_scrap_data request function
+INFO:root:5347 length of exclude_scraper_listing_id+++++++++++++++++++
+INFO:root:4082 length of request data
+INFO:root: Before Initialize the list++++++++++++++++++++++++++++++++++
+INFO:root:2023-05-10 05:35:51.244072 5347 listind_id_list sent for reqest function
+INFO:root:2023-05-10 05:35:51.244036 in listing_cron_scrap_data request function
+INFO:root:os.listdir(dir_path)......................['6299152.json']
+WARNING:django.security.csrf:Forbidden (CSRF cookie not set.): /
+WARNING:django.request:Not Found: /.env
+INFO:root:2023-05-10 05:35:51.244072 in listing_cron_scrap_data request function
+INFO:root:os.listdir(dir_path) listing_cron_scrap_data......................['6299152.json']
+WARNING:django.request:Not Found: /mgmt/tm/util/bash
+WARNING:django.security.csrf:Forbidden (CSRF cookie not set.): /
+WARNING:django.request:Not Found: /.env
+INFO:root:2023-05-10 06:30:03.277967 Cron job Started.
+INFO:root:2023-05-10 05:35:51.244072 in cron_scrap_data request function
+INFO:root:5391 length of exclude_scraper_listing_id+++++++++++++++++++
+INFO:root:4081 length of request data
+INFO:root: Before Initialize the list++++++++++++++++++++++++++++++++++
+INFO:root:2023-05-10 05:35:51.244072 5391 listind_id_list sent for reqest function
+INFO:root:2023-05-10 05:35:51.244036 in listing_cron_scrap_data request function
+INFO:root:os.listdir(dir_path)......................['6299152.json']
+WARNING:django.request:Not Found: /Core/Skin/Login.aspx
+INFO:root:2023-05-10 05:35:51.244072 in listing_cron_scrap_data request function
+INFO:root:os.listdir(dir_path) listing_cron_scrap_data......................['6299152.json']
+INFO:root:2023-05-10 07:30:02.745150 Cron job Started.
+WARNING:django.request:Not Found: /api/islogged
+INFO:root:2023-05-10 05:35:51.244072 in cron_scrap_data request function
+INFO:root:5459 length of exclude_scraper_listing_id+++++++++++++++++++
+INFO:root:4076 length of request data
+INFO:root: Before Initialize the list++++++++++++++++++++++++++++++++++
+INFO:root:2023-05-10 05:35:51.244072 5459 listind_id_list sent for reqest function
+INFO:root:2023-05-10 05:35:51.244036 in listing_cron_scrap_data request function
+INFO:root:os.listdir(dir_path)......................['6299152.json']
+INFO:root:2023-05-10 05:35:51.244072 in listing_cron_scrap_data request function
+INFO:root:os.listdir(dir_path) listing_cron_scrap_data......................['6299152.json']
+WARNING:django.request:Not Found: /.env
+WARNING:django.security.csrf:Forbidden (CSRF cookie not set.): /
+WARNING:django.request:Not Found: /favicon.ico
+WARNING:django.request:Not Found: /www.shadowserver.org:443
+INFO:root:2023-05-10 08:30:02.207939 Cron job Started.
+WARNING:django.request:Not Found: /Core/Skin/Login.aspx
+INFO:root:2023-05-10 05:35:51.244072 in cron_scrap_data request function
+INFO:root:5501 length of exclude_scraper_listing_id+++++++++++++++++++
+INFO:root:4079 length of request data
+INFO:root: Before Initialize the list++++++++++++++++++++++++++++++++++
+INFO:root:2023-05-10 05:35:51.244072 5501 listind_id_list sent for reqest function
+INFO:root:2023-05-10 05:35:51.244036 in listing_cron_scrap_data request function
+INFO:root:os.listdir(dir_path)......................['6299152.json']
+INFO:root:2023-05-10 05:35:51.244072 in listing_cron_scrap_data request function
+INFO:root:os.listdir(dir_path) listing_cron_scrap_data......................['6299152.json']
+INFO:root:2023-05-10 09:30:02.921041 Cron job Started.
+INFO:root:2023-05-10 05:35:51.244072 in cron_scrap_data request function
+INFO:root:5541 length of exclude_scraper_listing_id+++++++++++++++++++
+INFO:root:4076 length of request data
+INFO:root: Before Initialize the list++++++++++++++++++++++++++++++++++
+INFO:root:2023-05-10 05:35:51.244072 5541 listind_id_list sent for reqest function
+INFO:root:2023-05-10 05:35:51.244036 in listing_cron_scrap_data request function
+INFO:root:os.listdir(dir_path)......................['6299152.json']
+INFO:root:2023-05-10 05:35:51.244072 in listing_cron_scrap_data request function
+INFO:root:os.listdir(dir_path) listing_cron_scrap_data......................['6299152.json']
+INFO:root:2023-05-10 10:30:02.650366 Cron job Started.
+INFO:root:2023-05-10 05:35:51.244072 in cron_scrap_data request function
+INFO:root:5605 length of exclude_scraper_listing_id+++++++++++++++++++
+INFO:root:4083 length of request data
+INFO:root: Before Initialize the list++++++++++++++++++++++++++++++++++
+INFO:root:2023-05-10 05:35:51.244072 5605 listind_id_list sent for reqest function
+INFO:root:2023-05-10 05:35:51.244036 in listing_cron_scrap_data request function
+INFO:root:os.listdir(dir_path)......................['6299152.json']
+INFO:root:2023-05-10 05:35:51.244072 in listing_cron_scrap_data request function
+INFO:root:os.listdir(dir_path) listing_cron_scrap_data......................['6299152.json']
+WARNING:django.security.csrf:Forbidden (CSRF cookie not set.): /
+WARNING:django.request:Not Found: /.env
+WARNING:django.request:Not Found: /.env
+WARNING:django.request:Not Found: /telescope/requests
+WARNING:django.request:Not Found: /info.php
+WARNING:django.request:Not Found: /.git/config
+WARNING:django.request:Not Found: /server-status
+WARNING:django.request:Not Found: /config.json
+INFO:root:2023-05-10 11:30:03.204782 Cron job Started.
+INFO:root:2023-05-10 05:35:51.244072 in cron_scrap_data request function
+INFO:root:5671 length of exclude_scraper_listing_id+++++++++++++++++++
+INFO:root:4091 length of request data
+INFO:root: Before Initialize the list++++++++++++++++++++++++++++++++++
+INFO:root:2023-05-10 05:35:51.244072 5671 listind_id_list sent for reqest function
+INFO:root:2023-05-10 05:35:51.244036 in listing_cron_scrap_data request function
+INFO:root:os.listdir(dir_path)......................['6299152.json']
+INFO:root:2023-05-10 05:35:51.244072 in listing_cron_scrap_data request function
+INFO:root:os.listdir(dir_path) listing_cron_scrap_data......................['6299152.json']
+WARNING:django.security.csrf:Forbidden (CSRF cookie not set.): /
+WARNING:django.request:Not Found: /.env
+WARNING:django.request:Not Found: /client/get_targets
+WARNING:django.request:Not Found: /upl.php
+WARNING:django.request:Not Found: /geoip/
+INFO:root:2023-05-10 12:30:02.495732 Cron job Started.
+WARNING:django.request:Not Found: /Core/Skin/Login.aspx
+INFO:root:2023-05-10 05:35:51.244072 in cron_scrap_data request function
+INFO:root:5764 length of exclude_scraper_listing_id+++++++++++++++++++
+INFO:root:4091 length of request data
+INFO:root: Before Initialize the list++++++++++++++++++++++++++++++++++
+INFO:root:2023-05-10 05:35:51.244072 5764 listind_id_list sent for reqest function
+INFO:root:2023-05-10 05:35:51.244036 in listing_cron_scrap_data request function
+INFO:root:os.listdir(dir_path)......................['6299152.json']
+INFO:root:2023-05-10 05:35:51.244072 in listing_cron_scrap_data request function
+INFO:root:os.listdir(dir_path) listing_cron_scrap_data......................['6299152.json']
