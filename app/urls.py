@@ -18,4 +18,5 @@ urlpatterns = [
     path("api/data", AllTableData.as_view()),
     path("api/request_data", TestDatatableAPIView.as_view()),
     path("api/test_csv", TestCsvExport.as_view()),    
+    # path("delete", delete_all),    
 ]

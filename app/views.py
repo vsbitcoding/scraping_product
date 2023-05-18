@@ -27,6 +27,7 @@ today_date = str(f"{current.month}/{current.year}")
 
 
 # Create your views here.
+@csrf_exempt
 def index(request):
     form = InputForm()
     all_store = Store.objects.all()
@@ -69,7 +70,7 @@ def index(request):
         )
     return render(request, "home.html", {"form": form, "all_store": all_store})
 
-
+@csrf_exempt
 def scrape_store(request, store_id):
     if request.method == "GET":
         payload = json.dumps({"member_id": [store_id]})
@@ -78,7 +79,7 @@ def scrape_store(request, store_id):
         return redirect("/")
     return HttpResponse({"Method Not Allowed"}, status=405)
 
-
+@csrf_exempt
 def button_action(request, store_id, action):
     store = Store.objects.get(store_id=store_id)
     store.action = action
@@ -86,14 +87,14 @@ def button_action(request, store_id, action):
     return redirect("/")
 
 
-
+@csrf_exempt
 def product_list(request):
     return render(request, "product.html")
 
 
 logging.basicConfig(filename="/home/ubuntu/project/app/cron.log", level=logging.INFO)
 
-
+@csrf_exempt
 def cron_scrape_store(request, store_id):
     store = list(
         Store.objects.filter(action="active").values_list("store_id", flat=True)
@@ -305,13 +306,13 @@ def listing_cron_scrap_data(request):
         return HttpResponse({"Data stored successfully"}, status=200)
 
     return HttpResponse({"Method Not Allowed"}, status=405)
-
+@csrf_exempt
 def update_or_create_product(args):
     row, today_date = args
     is_product = Products.objects.filter(listing_id=row["listing_id"], date=today_date).first()
     if is_product:
         previous_data = is_product.quantity_remaining or row['quantity_remaining']
-        sold = int(previous_data) - row['quantity_remaining']
+        sold = int(previous_data) - int(row['quantity_remaining'])
         if sold >= 0:
             total_sold_quantity = is_product.sold_quantity + sold
         else:
@@ -338,7 +339,6 @@ def update_or_create_product(args):
         )
     # Remove products with sold_quantity = 0
     # Products.objects.filter(listing_id=str(row["listing_id"]), sold_quantity=0).delete()
-
 
 
 class TableData(APIView):
@@ -378,7 +378,6 @@ class TableData(APIView):
         }
         return Response(data)
 
-
 class AllTableData(APIView):
     def get(self, request):
         photo_id = request.GET.get("photo_id", "default_value")
@@ -408,7 +407,6 @@ class AllTableData(APIView):
             data_list.append(data_dict)
         data = {"data_list": data_list}
         return Response(data)
-
 
 
 class TestDatatableAPIView(APIView):
@@ -486,7 +484,7 @@ class TestDatatableAPIView(APIView):
         
         # Return the final response
         return Response(final_response, status=status.HTTP_200_OK)
-
+    
 class TestCsvExport(APIView):
     def post(self, request):
         test_data = Products.objects.filter(store_name = "grabstore")
@@ -502,3 +500,8 @@ class TestCsvExport(APIView):
                                  obj.store_name, obj.sold_quantity, obj.date, obj.data_created_at, obj.data_updated_at])
         return Response("OK")
 
+# def delete_all(request):
+#     Store.objects.all().delete()
+#     Products.objects.all().delete()
+#     SoldProduct.objects.all().delete()
+#     return redirect("/")
