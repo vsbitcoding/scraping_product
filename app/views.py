@@ -485,8 +485,20 @@ class TestDatatableAPIView(APIView):
         # Return the final response
         return Response(final_response, status=status.HTTP_200_OK)
     
+# from pytz import timezone
+
 class TestCsvExport(APIView):
     def post(self, request):
+        # indian_timezone = timezone('Asia/Kolkata')
+        # stockholm_timezone = timezone('Europe/Stockholm')
+
+        # # Convert the start time from Indian time to Europe/Stockholm time
+        # start_time_indian = datetime(2023, 5, 16, 17, 0)  # May 16, 2023, 5:00 p.m. Indian time
+        # start_time_stockholm = indian_timezone.localize(start_time_indian).astimezone(stockholm_timezone)
+
+        # # Convert the end time from Indian time to Europe/Stockholm time
+        # end_time_indian = datetime(2023, 5, 17, 17, 0)  # May 17, 2023, 5:00 p.m. Indian time
+        # end_time_stockholm = indian_timezone.localize(end_time_indian).astimezone(stockholm_timezone)
         test_data = Products.objects.filter(store_name = "grabstore")
         export_csv_dir = "/home/ubuntu/project/media/test_csv"
         file_name = "grabstore.csv"
